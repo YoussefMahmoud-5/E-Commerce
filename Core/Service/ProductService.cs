@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DomainLayer.Contracts;
 using DomainLayer.Models;
+using Service.Specifications;
 using ServiceAbstraction;
+using Shared;
 using Shared.DataTransfereObeject;
 
 namespace Service
@@ -22,14 +24,23 @@ namespace Service
             return brandsDto;
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
             var repo = _unitOfWork.GetRepository<Product,int>();
-            var products = await repo.GetAllAsync();
+            var specification = new ProductWithBrandAndTypeSpecification(queryParams);
+            var products = await repo.GetAllAsync(specification);
             var productsDto = _mapper.Map<IEnumerable<Product>,IEnumerable<ProductDto>>(products);
             return productsDto;
         }
 
+        public async Task<ProductDto?> GetProductByIdAsync(int id)
+        {
+            var repo = _unitOfWork.GetRepository<Product,int>();
+            var specification = new ProductWithBrandAndTypeSpecification(id);
+            var product = await repo.GetByIdAsync(specification);
+            if(product is null ) return null;
+            return  _mapper.Map<Product, ProductDto>(product);
+        }
         public async Task<IEnumerable<TypeDto>> GetAllTypesAsync()
         {
             var repo = _unitOfWork.GetRepository<ProductType, int>();
@@ -38,12 +49,5 @@ namespace Service
             return typesDto;
         }
 
-        public async Task<ProductDto?> GetProductByIdAsync(int id)
-        {
-            var repo = _unitOfWork.GetRepository<Product,int>();
-            var product = await repo.GetByIdAsync(id);
-            if(product is null ) return null;
-            return  _mapper.Map<Product, ProductDto>(product);
-        }
     }
 }
