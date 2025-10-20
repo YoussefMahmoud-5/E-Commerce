@@ -31,6 +31,11 @@ namespace Persistence
             {
                 query = query.OrderByDescending(specification.OrderByDescending);
             }
+            if (specification.IsPagination)
+            {
+                query = query.Skip(specification.Skip);
+                query = query.Take(specification.Take);
+            }
             if(specification.IncludeExpressions is not null && specification.IncludeExpressions.Any())
             {
                 //foreach(var expression in specification.IncludeExpressions)
