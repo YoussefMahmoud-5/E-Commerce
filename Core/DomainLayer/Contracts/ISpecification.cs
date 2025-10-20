@@ -14,5 +14,8 @@ namespace DomainLayer.Contracts
         List<Expression<Func<TEntity,Object>>> IncludeExpressions {  get; }
         Expression<Func<TEntity,object>> OrderBy {  get; }
         Expression<Func<TEntity,object>> OrderByDescending {  get; }
+        public int Take { get; }
+        public int Skip { get; }
+        public bool IsPagination { get; set; }
     }
 }

@@ -38,6 +38,7 @@ namespace Service.Specifications
 
 
             }
+            ApplyPagination(queryParams.PageSize,queryParams.PageIndex);
         }
         // Get Product By Id 
         public ProductWithBrandAndTypeSpecification(int id) : base(P => P.Id == id) 
