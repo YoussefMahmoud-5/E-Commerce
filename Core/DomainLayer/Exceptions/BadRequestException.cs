@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public sealed class BasketNotFoundException(string key) : NotFoundException($"Basket With Keu {key} is Not Found")
+    public sealed class BadRequestException(List<string> _errors) : Exception("Validation Failed")
     {
+        public List<string> Errors { get; } = _errors;
     }
 }

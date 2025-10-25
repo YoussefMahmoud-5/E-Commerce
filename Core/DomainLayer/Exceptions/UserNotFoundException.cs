@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public sealed class BasketNotFoundException(string key) : NotFoundException($"Basket With Keu {key} is Not Found")
+    public sealed class UserNotFoundException(string email) : NotFoundException($"Email {email} is not Found, Try Register First :)")
     {
     }
 }

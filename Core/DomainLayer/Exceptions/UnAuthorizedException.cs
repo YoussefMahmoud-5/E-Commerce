@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public sealed class BasketNotFoundException(string key) : NotFoundException($"Basket With Keu {key} is Not Found")
+    public sealed class UnAuthorizedException(string message = "Invalid Email Or Password") : Exception(message)
     {
     }
 }
