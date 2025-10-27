@@ -17,5 +17,25 @@ namespace ServiceAbstraction
         // Take Email, Password, Display Name, User Name , Phone Number
         // Return Token, Email, Diplay Name
         Task<UserDto> RegisterAsync(RegisterDto registerDto);
+
+        // Check Email 
+        // Take Email
+        // Return bool
+        Task<bool> CheckEmailAsync(string email);
+
+        // Get Current User
+        // Take Email 
+        // Return UserDto (Token, Email, Diplay Name)
+        Task<UserDto> GetCurrentUserAsync(string email);
+
+        // Get Current User Address
+        // Take Email 
+        // Return AddressDto 
+        Task<AddressDto> GetCurrentUserAddressAsync(string email);
+
+        // Update Current User Address
+        // Take Email, AddressDto
+        // Return AddressDto
+        Task<AddressDto> UpdateCurrentUserAddressAsync(string email,  AddressDto addressDto);
     }
 }
