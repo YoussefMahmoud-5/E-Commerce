@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DomainLayer.Contracts;
 using DomainLayer.Models;
 using DomainLayer.Models.IdentityModule;
+using DomainLayer.Models.OrderModule;
 using DomainLayer.Models.ProductModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,16 @@ namespace Persistence
                     {
                         await _dbContext.Products.AddRangeAsync(products);
                     }
+                }
+                if (!_dbContext.Set<DeliveryMethod>().Any())
+                {
+                    var deliveryData = File.OpenRead(@"..\Infastructure\Persistence\Data\DataSeed\delivery.json");
+                    var deliveries = await JsonSerializer.DeserializeAsync<List<DeliveryMethod>>(deliveryData);
+                    if(deliveries is not null && deliveries.Any())
+                    {
+                        await _dbContext.Set<DeliveryMethod>().AddRangeAsync(deliveries);
+                    }
+
                 }
                 await _dbContext.SaveChangesAsync();
             }

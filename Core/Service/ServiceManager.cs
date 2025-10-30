@@ -17,14 +17,17 @@ namespace Service
                                 UserManager<ApplicationUser> _userManager,
                                 IConfiguration _configuration) : IServiceManager
     {
+
         private readonly Lazy<IProductService> _lazyProductService = new Lazy<IProductService>(() => new  ProductService(_unitOfWork,_mapper));
         private readonly Lazy<IBasketService> _lazyBasketService = new Lazy<IBasketService>(() => new BasketService(_basketRepository, _mapper));
         private readonly Lazy<IAuthenticationService> _lazyAuthenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(_userManager, _configuration, _mapper));
-        
+        private readonly Lazy<IOrderService> _lazyOrderService = new Lazy<IOrderService>(() => new OrderService(_mapper, _basketRepository, _unitOfWork));
         public IProductService productService => _lazyProductService.Value;
 
         public IBasketService basketService => _lazyBasketService.Value;
 
         public IAuthenticationService authenticationService => _lazyAuthenticationService.Value;
+
+        public IOrderService orderService => _lazyOrderService.Value;
     }
 }
