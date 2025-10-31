@@ -17,12 +17,13 @@ namespace Service.MappingProfiles
             CreateMap<AddressDto, OrderAddress>().ReverseMap();
 
             CreateMap<Order, OrderToReturnDto>()
-                .ForMember(dist => dist.DeliveryMethod, option => option.MapFrom(scr => scr.DeliveryMethod.ShortName))
-                .ForMember(dest => dest.DeliveryMethodId, opt => opt.MapFrom(src => src.DeliveryMethodId));
+                .ForMember(dist => dist.DeliveryMethod, option => option.MapFrom(scr => scr.DeliveryMethod.ShortName));
 
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(dist => dist.ProductName, option => option.MapFrom(scr => scr.Product.ProductName))
                 .ForMember(dist => dist.PictureUrl, option => option.MapFrom<OrderItemPictureUrlResolver>());
+
+            CreateMap<DeliveryMethod, DeliveryMehtodDto>();
         }
     }
 }
