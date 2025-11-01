@@ -4,27 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Presentation.Attributes;
 using ServiceAbstraction;
 using Shared;
 using Shared.DataTransfereObeject.ProductModule;
+using Shared.ErrorModels;
 
 namespace Presentation.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class ProductsController(IServiceManager _serviceManager) : ControllerBase
+    public class ProductsController(/*[FromKeyedServices("Lazy")]*/IServiceManager _serviceManager) : ControllerBase
     {
         //Get All Products
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         [HttpGet]
+
         // GET: BaseUrl/Product/Get
+        [Cache(500)]
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
             var Products = await _serviceManager.productService.GetAllProductsAsync(queryParams);
             return Ok(Products);
         }
         //Get Product By Id 
+        [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorToReturn), StatusCodes.Status404NotFound)]
         [HttpGet("{id:int}")]
         // GET: BaseUrl/Product/Get/id
         public async Task<ActionResult<ProductDto>> GetProductById(int id)

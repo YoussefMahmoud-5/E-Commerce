@@ -28,9 +28,9 @@ namespace E_Commerce.Web
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerServices();
+            builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices(builder.Configuration);
 
-            builder.Services.AddApplicationServices();
             builder.Services.AddWebApplicationServices();
             builder.Services.AddJwtServices(builder.Configuration);
             #endregion
