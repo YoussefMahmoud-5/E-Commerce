@@ -27,6 +27,13 @@ namespace Service
             var basket = await _basketRepository.GetBasketAsync(orderDto.BasketId);
             if (basket is null)
                 throw new BasketNotFoundException(orderDto.BasketId);
+            var existingOrderSpec = new OrderWithPaymentIntentIdSpecification(basket.PaymentIntentId);
+            var existingOrder = await _unitOfWork.GetRepository<Order, Guid>()
+                                           .GetByIdAsync(existingOrderSpec);
+            if(existingOrder is not null)
+            {
+                 _unitOfWork.GetRepository<Order, Guid>().Remove(existingOrder);
+            }
             // Create Order Items 
             List<OrderItem> OrderItems = new List<OrderItem>();
             var ProductRepo = _unitOfWork.GetRepository<Product, int>();
@@ -56,7 +63,7 @@ namespace Service
             // Calculate  Sub Total
             var subTotal = OrderItems.Sum(OI => OI.Price *  OI.Quantity);
 
-            var order = new Order(email, address, delivery, OrderItems, subTotal);
+            var order = new Order(email, address, delivery, OrderItems, subTotal, basket.PaymentIntentId);
             await _unitOfWork.GetRepository<Order, Guid>().AddAsync(order);
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<Order,OrderToReturnDto>(order);

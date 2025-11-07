@@ -15,26 +15,26 @@ using Shared.ErrorModels;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[Controller]")]
     [ApiController]
-    public class ProductsController(/*[FromKeyedServices("Lazy")]*/IServiceManager _serviceManager) : ControllerBase
+    [Route("api/[Controller]")]//baseUrl/api/controller
+    public class ProductsController(IServiceManager _serviceManager) : ControllerBase
     {
         //Get All Products
         //[Authorize(Roles ="Admin")]
+        [Cache(120)]
         [HttpGet]
-
-        // GET: BaseUrl/Product/Get
-        [Cache(500)]
-        public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
+        //baseUrl/api/Products
+        public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParams queryParams)
         {
-            var Products = await _serviceManager.productService.GetAllProductsAsync(queryParams);
-            return Ok(Products);
+            var products = await _serviceManager.productService.GetAllProductsAsync(queryParams);
+            return Ok(products);
+
         }
-        //Get Product By Id 
+        //Get  Product by id
         [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorToReturn), StatusCodes.Status404NotFound)]
         [HttpGet("{id:int}")]
-        // GET: BaseUrl/Product/Get/id
+        //baseUrl/api/Product/10
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
             var product = await _serviceManager.productService.GetProductByIdAsync(id);
@@ -42,17 +42,15 @@ namespace Presentation.Controllers
         }
         //Get All Brands
         [HttpGet("brands")]
-        // GET: BaseUrl/Product/Get/brands
-
+        //baseUrl/api/Products/brands
         public async Task<ActionResult<IEnumerable<BrandDto>>> GetAllBrands()
         {
             var brands = await _serviceManager.productService.GetAllBrandsAsync();
             return Ok(brands);
         }
-        //Get All Types
+        //Get All types
         [HttpGet("types")]
-        // GET: BaseUrl/Product/Get/types
-
+        //baseUrl/api/Products/types
         public async Task<ActionResult<IEnumerable<TypeDto>>> GetAllTypes()
         {
             var types = await _serviceManager.productService.GetAllTypesAsync();
