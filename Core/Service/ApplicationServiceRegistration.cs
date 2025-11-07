@@ -14,8 +14,8 @@ namespace Service
         public static IServiceCollection AddApplicationServices(this IServiceCollection Services)
         {
             Services.AddAutoMapper(config => config.AddProfile(new ProductProfile()), typeof(Service.AssemblyReference).Assembly);
-            Services.AddScoped<IServiceManager, ServiceManagerWithFactoryDelegate>();
-            //Services.AddScoped<IServiceManager, ServiceManager>();
+            //Services.AddScoped<IServiceManager, ServiceManagerWithFactoryDelegate>();
+            Services.AddScoped<IServiceManager, ServiceManager>();
 
             //Services.AddKeyedScoped<IServiceManager, ServiceManager>("Lazy");
             //Services.AddKeyedScoped<IServiceManager, ServiceManagerWithFactoryDelegate>("FactroyDelegate");
