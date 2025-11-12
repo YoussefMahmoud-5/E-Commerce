@@ -31,7 +31,7 @@ namespace E_Commerce.Web.Extensions
                 {
                     DisplayRequestDuration = true
                 };
-                option.DocumentTitle = "E-Commerce Api";
+                option.DocumentTitle = "Talabat Api";
                 option.JsonSerializerOptions = new JsonSerializerOptions()
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase
